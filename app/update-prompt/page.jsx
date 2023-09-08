@@ -2,15 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import axios from "axios";
 import Form from "@components/Form";
+import { toast } from 'react-toastify'
 
 const UpdatePrompt = () => {
     const searchParams = useSearchParams();
     const promptId = searchParams.get('id');
     const { data: session } = useSession();
-
+    const router = useRouter();
     const [submitting, setIsSubmitting] = useState(false);
     const [post, setPost] = useState({ prompt: "", tags: [] });
 
@@ -19,7 +20,7 @@ const UpdatePrompt = () => {
             async () => {
 
                 const resp = await axios.get(`/api/prompt/${promptId}`);
-                console.log(resp.data.prompt);
+
                 setPost(resp.data.prompt);
             }
         )();
@@ -46,12 +47,14 @@ const UpdatePrompt = () => {
         try {
             const response = await axios.patch(`/api/prompt/${promptId}`, prompt);
             if (response.data.message) {
-                alert(response.data.message);
+                toast.success(response.data.message);
+                router.push('/profile')
             }
             else {
-                alert(response.data.error);
+                toast.error(response.data.error);
             }
         } catch (error) {
+            toast.error(error);
             console.error("Axios request failed:", error);
 
         } finally {

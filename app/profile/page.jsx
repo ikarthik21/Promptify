@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-
+import { toast } from 'react-toastify';
 import Profile from '@components/Profile';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
@@ -48,7 +48,9 @@ const MyProfile = () => {
         await axios.delete(`/api/prompt/${post._id.toString()}`);
         const filteredPosts = posts.filter((item) => item._id !== post._id);
         setPosts(filteredPosts);
+        toast.success("Prompt deleted successfully");
       } catch (error) {
+        toast.error(error);
         console.log(error);
       }
     }

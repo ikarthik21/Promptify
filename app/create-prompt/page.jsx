@@ -5,17 +5,20 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Form from "@components/Form";
+import { toast } from 'react-toastify';
 
 const CreatePrompt = () => {
+  const notify = () => toast("Wow so easy!");
   const router = useRouter();
   const { data: session } = useSession();
 
   const [submitting, setIsSubmitting] = useState(false);
   const [post, setPost] = useState({ prompt: "", tags: [] });
 
- 
+
 
   const createPrompt = async (e) => {
+
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -28,14 +31,15 @@ const CreatePrompt = () => {
     try {
       const response = await axios.post('/api/prompt/new', prompt);
       if (response.data.message) {
-        alert(response.data.message);
+        toast.success(response.data.message);
+        router.push('/')
       }
       else {
-        alert(response.data.error);
+        toast.error(response.data.error);
       }
     } catch (error) {
       console.error("Axios request failed:", error);
-      // Show a general error message to the user
+      toast.error(error);
     } finally {
       setIsSubmitting(false);
     }
@@ -45,6 +49,7 @@ const CreatePrompt = () => {
   };
 
   return (
+
     <Form
       type='Create'
       post={post}

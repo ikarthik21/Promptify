@@ -69,10 +69,10 @@ const Promptcard = ({ post, handleTagClick, handleDelete, handleEdit }) => {
 
 
 
-      <div className="flex ">
+      <div className="flex flex-wrap">
         {
           post.tags.map((post, idx) => {
-            return <div key={idx}>
+            return <div key={idx} className="flex flex-wrap my-1">
               <p className="font-inter mr-4 text-sm   bg-gray-300  rounded-lg p-1 cursor-pointer" onClick={() => handleTagClick && handleTagClick(post)}>#{post}</p>
             </div>
 

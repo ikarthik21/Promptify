@@ -2,6 +2,8 @@ import '@styles/globals.css';
 
 import Nav from '@components/Nav';
 import Providers from '@components/Providers';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata = {
   title: 'Promptify',
@@ -23,8 +25,9 @@ export default function RootLayout({ children }) {
             <Nav />
             {children}
           </main>
-
+          <ToastContainer />
         </Providers>
+
       </body>
     </html>
   )
